@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   Post.associate = (db) => {
     db.Post.belongsTo(db.User); // 1대 다 관계
-    db.Post.belongsToMany(db.Hashtag); // 다 대 다 관계
+    db.Post.belongsToMany(db.Hashtag, { through: "PostHashtag" }); // 다 대 다 관계
     db.Post.hasMany(db.Comment);
     db.Post.hasMany(db.Image); // hasOne 도 있음
     db.Post.belongsTo(db.Post, { as: "Retweet" }); // column name 지정
