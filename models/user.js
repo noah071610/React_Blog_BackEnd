@@ -28,15 +28,15 @@ module.exports = (sequelize, DataTypes) => {
     db.User.hasMany(db.Post);
     db.User.hasMany(db.Comment);
     db.User.belongsToMany(db.Post, { through: "Like", as: "Liked" });
-    db.User.belongsToMany(db.Post, {
+    db.User.belongsToMany(db.User, {
       through: "Follow",
       as: "Followers",
-      foreienKey: "followingId",
+      foreignKey: "FollowingId",
     });
-    db.User.belongsToMany(db.Post, {
+    db.User.belongsToMany(db.User, {
       through: "Follow", // through는 table 아이디
       as: "Followings",
-      foreienKey: "followerId", // column 아이디
+      foreignKey: "FollowerId", // column 아이디
     });
   }; // 관계가 있는것들은 associate에서 관리
   return User;
