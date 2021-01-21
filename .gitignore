@@ -89,4 +89,5 @@ typings/
 
 # Anoter....
 backmemo.txt
-config/config.json
+
+config/
