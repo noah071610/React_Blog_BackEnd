@@ -15,10 +15,11 @@ dotenv.config();
 
 app.use(
   cors({
-    origin: "*", // 보안상 이슈가 있어서 실무에선 origin을 제대로 설정
-    credentials: false,
+    origin: "http://localhost:3000", // true도 됨
+    credentials: true, // 이래야지 쿠키도 같이 전달됨
   })
 );
+
 passportConfig();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // body 에다가 넣어주는 역할
@@ -51,7 +52,6 @@ app.get("/api", (req, res) => {
 
 app.use("/post", postRouter);
 app.use("/user", userRouter);
-
 app.listen(3065, () => {
   console.log("서버 실행중");
 });
