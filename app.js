@@ -3,9 +3,11 @@ const cors = require("cors");
 const app = express(); // get 가져오다 post 생성하다 put 전체 수정 patch 부분수정 delete 제거 options 찔러보기 head 헤더 바디 만 가져오기
 // 애매하면 post 합의해서 잘 합시다.
 const dotenv = require("dotenv");
+const morgan = require("morgan");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const postRouter = require("./routes/post");
+const postsRouter = require("./routes/posts");
 const userRouter = require("./routes/user");
 const db = require("./models");
 const passportConfig = require("./passport");
@@ -13,6 +15,7 @@ const passport = require("passport");
 
 dotenv.config();
 
+app.use(morgan("dev")); // morgan은 백엔드 디버깅 헬프툴
 app.use(
   cors({
     origin: "http://localhost:3000", // true도 됨
@@ -51,7 +54,9 @@ app.get("/api", (req, res) => {
 });
 
 app.use("/post", postRouter);
+app.use("/posts", postsRouter);
 app.use("/user", userRouter);
+
 app.listen(3065, () => {
   console.log("서버 실행중");
 });

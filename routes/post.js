@@ -1,5 +1,5 @@
 const express = require("express");
-const { Post, Comment, Image } = require("../models");
+const { Post, Comment, Image, User } = require("../models");
 const { isLoggedIn } = require("./middlewares");
 const router = express.Router();
 
@@ -12,7 +12,19 @@ router.post("/", isLoggedIn, async (req, res, next) => {
     });
     const fullPost = await Post.findOne({
       where: { id: post.id },
-      inclue: [{ model: Image }, { model: Comment }, { model: User }],
+      include: [
+        { model: Image },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ["id", "nickname"],
+            },
+          ],
+        },
+        { model: User },
+      ],
     });
     res.status(201).json(fullPost);
   } catch (error) {
@@ -33,10 +45,19 @@ router.post("/:postId/comment", isLoggedIn, async (req, res, next) => {
     const comment = await Comment.create({
       // 데이터는 보통 제이슨으로 많이함
       content: req.body.content,
-      PostId: req.params.postId, // 위에 동적 파라미터 접근
-      User: req.user.id,
+      PostId: parseInt(req.params.postId), // 위에 동적 파라미터 접근
+      UserId: req.user.id,
     });
-    res.status(201).json(comment);
+    const fullComment = await Comment.findOne({
+      where: { id: comment.id },
+      include: [
+        {
+          model: User,
+          attributes: ["id", "nickname"],
+        },
+      ],
+    });
+    res.status(201).json(fullComment);
   } catch (error) {
     console.error(error);
     next(error);
