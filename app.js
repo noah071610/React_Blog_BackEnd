@@ -3,6 +3,7 @@ const cors = require("cors");
 const app = express(); // get 가져오다 post 생성하다 put 전체 수정 patch 부분수정 delete 제거 options 찔러보기 head 헤더 바디 만 가져오기
 // 애매하면 post 합의해서 잘 합시다.
 const dotenv = require("dotenv");
+const path = require("path");
 const morgan = require("morgan");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
@@ -15,6 +16,7 @@ const passport = require("passport");
 
 dotenv.config();
 
+app.use("/", express.static(path.join(__dirname, "uploads"))); // localhost3065 에 image 파일들을 접근
 app.use(morgan("dev")); // morgan은 백엔드 디버깅 헬프툴
 app.use(
   cors({
