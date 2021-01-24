@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Post.associate = (db) => {
+    // 관계에 따라 커맨드가 생김 ex) post.addComments post.removeLikers post.setRetweet .....
     db.Post.belongsTo(db.User); // 1대 다 관계
     db.Post.belongsToMany(db.Hashtag, { through: "PostHashtag" }); // 다 대 다 관계
     db.Post.hasMany(db.Comment);
